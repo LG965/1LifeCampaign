@@ -15,18 +15,21 @@ if os.path.isfile(missionReport):
 
     #   missionReport = "missionReport(2021-04-23_16-52-50)[0].txt"
 
+
     ####################  oggetti_Sx  ########################################
     log = open(missionReport)
     oggettiSx = open("oggetti_Sx.txt", "w")
     for linea_oggetti in log:
         linea_oggetti = linea_oggetti.rstrip()
-
-        if oggettoSx := re.findall('AType:12(.*)< PID', linea_oggetti):
+        #   T:25389 AType:12 ID:182272 TYPE:arf_dugouts_3[25011,1] COUNTRY:201 NAME:< Lin N 5 Rif Dug < PID:-1 POS(188777.2344,142.5266,178376.0156)
+        #   if oggettoSx := re.findall('AType:12(.*)< PID', linea_oggetti):
+        if oggettoSx := re.findall(r'AType:12(.*) TYPE:(.*) COUNTRY:(.*) NAME:(.*)< PID', linea_oggetti):
 
             #print(oggettoSx)
             for lineaSx in oggettoSx:
-                oggettiSx.write(lineaSx + "\n")
-
+                oggettiSx.write(lineaSx[0] + ' ' + lineaSx[1] + ' ' + lineaSx[3] + "\n")
+                lineaOggettiSx = lineaSx[0] + ' ' + lineaSx[1] + ' ' + lineaSx[3] + "\n"
+                print(lineaOggettiSx)
     oggettiSx.close()
     log.close()
 
