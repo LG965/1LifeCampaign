@@ -15,6 +15,7 @@ if os.path.isfile(missionReport):
 
     #   missionReport = "missionReport(2021-04-23_16-52-50)[0].txt"
 
+    ####################  oggetti_Sx  ########################################
     log = open(missionReport)
     oggettiSx = open("oggetti_Sx.txt", "w")
     for linea_oggetti in log:
@@ -29,6 +30,7 @@ if os.path.isfile(missionReport):
     oggettiSx.close()
     log.close()
 
+    ####################  oggetti_Dx  ########################################
     log = open(missionReport)
     oggettiDx = open("oggetti_Dx.txt", "w")
     for linea_oggetti in log:
@@ -43,16 +45,22 @@ if os.path.isfile(missionReport):
     oggettiDx.close()
     log.close()
 
+    ####################  oggetti_distrutti  ########################################
     log = open(missionReport)
     oggetti_distrutti = open("oggetti_distrutti.txt", "w")
     for linea_distrutti in log:
         linea_distrutti = linea_distrutti.rstrip()
-
-        if oggetto_distrutto := re.findall('AType:3(.*)POS', linea_distrutti):
+        #   T:25378 AType:3 AID:8193 TID:182272 POS(188777.2344,142.5266,178376.0156)
+        #   if oggetto_distrutto := re.findall('AType:3(.*)POS', linea_distrutti):
+        if oggetto_distrutto := re.findall('AType:3 A(.*) T(.*)POS', linea_distrutti):
 
             #print(oggetto_distrutto)
             for lineaDis in oggetto_distrutto:
-                oggetti_distrutti.write(lineaDis + "\n")
+                #if lineaDis == re.escape('AID:-1 TID:(.*)'):
+                if lineaDis[0] != 'ID:-1':
+                #     print(lineaDis)
+                # else:
+                    oggetti_distrutti.write(lineaDis[1] + "\n")
 
     oggetti_distrutti.close()
     log.close()
