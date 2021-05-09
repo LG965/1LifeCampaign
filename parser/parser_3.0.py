@@ -1,11 +1,12 @@
-# legge il log di missione e restituisce tre file txt contenenti tutti gli oggetti.txt e gli oggetti_distrutti.txt
+# legge il log di missione e restituisce due file txt contenenti tutti gli oggetti_distrutti_Sx.txt e gli oggetti_distrutti_Dx.txt
+
 import os.path
 import re
 
 print("#################################################################################################################\n")
 print("Inserisci il nome del file es: missionReport(2021-04-23_16-52-50)[0].txt\n")
 print("ATTENZIONE! Se i tre file oggetti_distrutti.txt, oggetti_Dx.txt e oggetti_Sx.txt esistono, verranno sovrascritti!\n")
-global lineaoggettiSx
+
 missionReport = input()
 
 if os.path.isfile(missionReport):
@@ -25,18 +26,9 @@ if os.path.isfile(missionReport):
         if oggettoSx := re.findall('AType:12(.*) TYPE:(.*) COUNTRY:(.*) NAME:(.*)< PID', linea_oggetti):
 
             #print(oggettoSx)
-            #lineaOggettiSxLista = [oggettoSx]
             for lineaSx in oggettoSx:
-                lineaOggettiSxLista = []
                 oggettiSx.write(lineaSx[0] + ' ' + lineaSx[1] + ' ' + lineaSx[3] + "\n")
-                #lineaoggettiSxLista[lineaSx + "\n"]
-                #global lineaOggettiSx
-                #   lineaSx[0] + ' ' + lineaSx[1] + ' ' + lineaSx[3] + "\n"
-                #lineaOggettiSx = lineaSx[0] + ' ' + lineaSx[1] + ' ' + lineaSx[3] + "\n"
-                #lineaOggettiSxLista.append(oggettoSx)
-                #   print(lineaOggettiSx)
-                lineaOggettiSxLista.append(lineaSx)
-                print(len(lineaOggettiSxLista))
+
     oggettiSx.close()
     log.close()
 
@@ -74,10 +66,36 @@ if os.path.isfile(missionReport):
 
     oggetti_distrutti.close()
     log.close()
-    print(lineaOggettiSxLista)
+    #print(lineaOggettiSxLista)
+
+    log = open(missionReport)
+    oggetti_distrutti_Sx = open("oggetti_distrutti_Sx.txt", "w")
+    oggetti_distrutti_Dx = open("oggetti_distrutti_Dx.txt", "w")
+    for linea_log in log:
+        if oggetto_distrutto := re.findall('AType:3 A(.*) T(.*)POS', linea_log):
+            for lineaDis in oggetto_distrutto:
+                if lineaDis[0] != 'ID:-1':
+                    print(lineaDis[1])
+                    #next(linea_log)
+
+                    for linea_log in log:
+                        if oggettoSx := re.findall('AType:12(.*) TYPE:(.*) COUNTRY:(.*) NAME:(.*)< PID', linea_log):
+                            for lineaSx in oggettoSx:
+                                print(lineaSx[0] + ' ' + lineaSx[1] + ' ' + lineaSx[3])
+                                #next(lineaSx)
+
+                                for linea_log in log:
+                                    if lineaSx[0] == lineaDis[1]:
+                                        oggetti_distrutti_Sx.write(lineaSx[0] + ' ' + lineaSx[1] + ' ' + lineaSx[3] + "\n")
+                                        #next(lineaDis)
+                                            #elif lineaDis[1] == lineaDx[0]:
+                                                #oggetti_distrutti_Dx.write(lineaDx[0] + ' ' + lineaDx[1] + ' ' + lineaDx[3] + "\n")
+
+    oggetti_distrutti_Sx.close()
+    oggetti_distrutti_Dx.close()
+    log.close()
     print("\nFile oggetti_distrutti.txt, oggetti_Dx.txt e oggetti_Sx.txt creati!")
 else:
     print("\nIl file mission inserito non esiste! Programma terminato.")
 
 input("\nPremi un tasto per chiudere...")
-
